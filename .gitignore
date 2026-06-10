@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Build output / installer (the .exe is published under GitHub Releases)
+dist/
+
+# Large bundled binaries & model - not stored in git (see README "Build from source")
+resources/bin/
+resources/model/
+build_pyi/dist/
+build_pyi/work/
+
+# Misc
+*.log
+__preview.html
+.DS_Store

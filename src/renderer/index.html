@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self';" />
+  <title>Shul</title>
+  <link rel="stylesheet" href="fonts.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="components.css" />
+  <link rel="stylesheet" href="modal.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img class="logo" src="img/logo.png" alt="Shul" />
+      <div class="brand-text">
+        <h1 class="wordmark">Shul</h1>
+        <p class="brand-tag">תמלול ותרגום אוטומטי לעברית</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <button id="add-btn" class="btn btn-primary">＋ הוסף סרטונים</button>
+    <div class="spacer"></div>
+  </div>
+
+  <main id="drop" class="queue">
+    <ul id="queue-list" class="queue-list"></ul>
+    <div id="queue-empty" class="queue-empty">
+      <svg class="empty-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+        <path d="M12 16V5m0 0L8 9m4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke-linecap="round"/>
+      </svg>
+      <p>גררו סרטונים לכאן</p>
+      <span>או לחצו “הוסף סרטונים” למעלה · תומכים בכל סוגי הווידאו: MOV, MP4, MKV ועוד</span>
+    </div>
+  </main>
+
+  <footer class="actionbar">
+    <p id="summary" class="summary">לא נבחרו סרטונים עדיין</p>
+    <button id="open-settings" class="btn btn-go hidden">המשך להגדרות</button>
+  </footer>
+
+  <div id="modal" class="modal-overlay hidden">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <header class="modal-head">
+        <h2 id="modal-title">הגדרות עיבוד</h2>
+        <button id="modal-close" class="modal-x" title="סגור">✕</button>
+      </header>
+      <div class="modal-body">
+        <p id="modal-count" class="modal-count"></p>
+
+        <div class="field-block">
+          <span class="field-label">תיקיית פלט<span class="req">חובה</span></span>
+          <button id="out-btn" class="field">
+            <svg class="tool-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke-linejoin="round"/>
+            </svg>
+            <span id="out-path" class="tool-val">בחרו תיקייה</span>
+          </button>
+        </div>
+
+        <div class="field-block">
+          <label class="toggle" title="תמלול ותרגום הסרטון לכתוביות">
+            <input type="checkbox" id="subs-toggle" checked />
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+            <span class="toggle-text">כתוביות</span>
+          </label>
+          <div class="subopts" id="subopts">
+            <span class="subopts-label">פלט:</span>
+            <div class="seg" id="format">
+              <button class="seg-opt selected" data-mode="srt">קובץ נפרד</button>
+              <button class="seg-opt" data-mode="burn">צרוב בווידאו</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <label class="toggle" title="פלט הווידאו בפורמט MP4 (אחרת נשמר בפורמט המקורי)">
+            <input type="checkbox" id="convert-mp4" />
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+            <span class="toggle-text">המרה ל-MP4</span>
+          </label>
+          <span class="field-hint">פלט הווידאו בפורמט MP4. בלי זה, וידאו צרוב נשמר בפורמט המקורי.</span>
+        </div>
+
+        <div id="claude-warn" class="warnbar hidden">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18">
+            <path d="M12 8v5" stroke-linecap="round"/><circle cx="12" cy="16.5" r="1" fill="currentColor" stroke="none"/>
+            <path d="M10.3 4l-7 12A2 2 0 0 0 5 19h14a2 2 0 0 0 1.7-3l-7-12a2 2 0 0 0-3.4 0z" stroke-linejoin="round"/>
+          </svg>
+          <span>Claude לא זמין במחשב - לא ניתן לתרגם לעברית. יופקו כתוביות <strong>באנגלית בלבד</strong>.</span>
+        </div>
+      </div>
+      <footer class="modal-foot">
+        <p id="modal-hint" class="modal-hint"></p>
+        <button id="start" class="btn btn-go" disabled>התחל המרה</button>
+      </footer>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="progress.js"></script>
+</body>
+</html>
