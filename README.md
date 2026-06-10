@@ -21,10 +21,12 @@
 
 - Electron (main / preload / renderer)
 - `src/main/pipeline.js` - תזמור הצינור לכל קובץ
-- `src/main/whisper.js` + `src/main/python/parakeet.py` - מנוע התמלול
+- `src/main/whisper.js` + `src/main/python/parakeet.py` - תמלול אנגלית (Parakeet)
+- `src/main/whisper-he.js` + `src/main/whisper-model.js` - תמלול עברית (whisper.cpp + ivrit.ai, מודל בהורדה לפי דרישה)
 - `src/main/translate.js` - תרגום עם Claude + מטמון
 - `src/main/srt.js` - בניית כתוביות, מיזוג, ו-RTL
 - `src/main/ffmpeg.js` - המרה / חילוץ שמע / צריבה
+- `src/main/updater.js` - עדכון אוטומטי דרך GitHub Releases
 
 ## בנייה מהמקור (Build from source)
 
@@ -33,7 +35,10 @@ the installer you need to place them in:
 
 - `resources/bin/` - `ffmpeg.exe`, `ffprobe.exe` (static Windows builds)
 - `resources/model/` - the Parakeet `nemo-parakeet-tdt-0.6b-v2` ONNX int8 files
+- `resources/whisper/` - whisper.cpp CPU binaries (`whisper-cli.exe` + ggml/whisper DLLs)
 - `build_pyi/dist/parakeet/` - the PyInstaller one-dir build of `parakeet.py`
+
+The Hebrew model (ivrit.ai ggml) is **not** bundled - it is downloaded on demand at runtime.
 
 Then:
 
@@ -42,4 +47,4 @@ npm install
 npx electron-builder --win --x64
 ```
 
-The installer is written to `dist/Shul-Setup-1.0.0.exe`.
+The installer is written to `dist/Shul-Setup-<version>.exe`.

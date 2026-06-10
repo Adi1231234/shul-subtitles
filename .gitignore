@@ -7,6 +7,7 @@ dist/
 # Large bundled binaries & model - not stored in git (see README "Build from source")
 resources/bin/
 resources/model/
+resources/whisper/
 build_pyi/dist/
 build_pyi/work/
 

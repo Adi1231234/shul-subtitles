@@ -66,7 +66,14 @@
       </header>
       <div class="modal-body">
         <p id="modal-count" class="modal-count"></p>
-
+        <div class="field-block">
+          <span class="field-label">שפת הסרטון</span>
+          <div class="seg" id="lang">
+            <button class="seg-opt selected" data-lang="en">אנגלית</button>
+            <button class="seg-opt" data-lang="he">עברית</button>
+          </div>
+          <span id="lang-hint" class="field-hint"></span>
+        </div>
         <div class="field-block">
           <span class="field-label">תיקיית פלט<span class="req">חובה</span></span>
           <button id="out-btn" class="field">
@@ -133,6 +140,7 @@
     </div>
   </div>
 
+  <script src="rows.js"></script>
   <script src="app.js"></script>
   <script src="progress.js"></script>
   <script src="prompt.js"></script>

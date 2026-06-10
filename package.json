@@ -1,6 +1,6 @@
 {
   "name": "subtitle-studio",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "סטודיו כתוביות - תמלול ותרגום אוטומטי של סרטונים לעברית",
   "main": "src/main/main.js",
   "scripts": {
@@ -32,6 +32,10 @@
       {
         "from": "build_pyi/dist/parakeet",
         "to": "parakeet"
+      },
+      {
+        "from": "resources/whisper",
+        "to": "whisper"
       }
     ],
     "win": {
