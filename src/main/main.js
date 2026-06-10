@@ -4,7 +4,8 @@ const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { runFile, cleanupWork } = require('./pipeline');
-const { checkClaude } = require('./translate');
+const { checkClaude, DEFAULT_PROMPT } = require('./translate');
+const { checkForUpdates } = require('./updater');
 
 let claudeStatus = null;
 
@@ -57,6 +58,20 @@ ipcMain.handle('pick-output', async () => {
 ipcMain.handle('last-output', () => {
   const d = readSettings().lastOutput;
   return d && fs.existsSync(d) ? d : null;
+});
+
+// Translation prompt: current (custom or default) + the default for the reset button.
+ipcMain.handle('prompt-get', () => ({
+  current: (readSettings().translatePrompt || '').trim() || DEFAULT_PROMPT,
+  default: DEFAULT_PROMPT,
+}));
+ipcMain.handle('prompt-set', (_e, text) => { writeSettings({ translatePrompt: (text || '').trim() }); return true; });
+
+// Startup update check - the renderer's guard calls this and shows progress.
+ipcMain.handle('check-updates', () => {
+  return checkForUpdates((status) => {
+    if (win && !win.isDestroyed()) win.webContents.send('update-status', status);
+  });
 });
 
 ipcMain.handle('open-path', (_e, p) => shell.openPath(p));

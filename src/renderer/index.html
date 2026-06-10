@@ -9,8 +9,17 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="components.css" />
   <link rel="stylesheet" href="modal.css" />
+  <link rel="stylesheet" href="update-guard.css" />
 </head>
 <body>
+  <div id="update-guard" class="update-guard">
+    <div class="ug-card">
+      <img class="ug-logo" src="img/logo.png" alt="Shul" />
+      <h2 class="ug-title">Shul</h2>
+      <p id="ug-msg" class="ug-msg">בודק עדכונים…</p>
+      <div id="ug-bar" class="ug-bar hidden"><div id="ug-fill" class="ug-fill"></div></div>
+    </div>
+  </div>
   <header class="topbar">
     <div class="brand">
       <img class="logo" src="img/logo.png" alt="Shul" />
@@ -19,6 +28,12 @@
         <p class="brand-tag">תמלול ותרגום אוטומטי לעברית</p>
       </div>
     </div>
+    <button id="settings-btn" class="icon-btn" title="הגדרות תרגום" aria-label="הגדרות תרגום">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 13a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.2a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.2a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7 4.6l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1z" stroke-linejoin="round"/>
+      </svg>
+    </button>
   </header>
 
   <div class="toolbar">
@@ -101,7 +116,26 @@
     </div>
   </div>
 
+  <div id="prompt-modal" class="modal-overlay hidden">
+    <div class="modal modal-wide" role="dialog" aria-modal="true">
+      <header class="modal-head">
+        <h2>הגדרות תרגום</h2>
+        <button id="prompt-close" class="modal-x" title="סגור">✕</button>
+      </header>
+      <div class="modal-body">
+        <p class="field-hint">אלה הנחיות התרגום שנשלחות למנוע לפני כל קטע כתוביות. אפשר לערוך אותן והן יישמרו לפעמים הבאות. שורות הכתוביות מצורפות אוטומטית בסוף.</p>
+        <textarea id="prompt-text" class="prompt-area" dir="rtl" spellcheck="false"></textarea>
+      </div>
+      <footer class="modal-foot">
+        <button id="prompt-reset" class="btn">איפוס לברירת מחדל</button>
+        <button id="prompt-save" class="btn btn-go">שמירה</button>
+      </footer>
+    </div>
+  </div>
+
   <script src="app.js"></script>
   <script src="progress.js"></script>
+  <script src="prompt.js"></script>
+  <script src="update-guard.js"></script>
 </body>
 </html>

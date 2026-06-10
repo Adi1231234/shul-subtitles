@@ -32,5 +32,16 @@
   padding: 14px 22px 18px; border-top: 1px solid var(--line-2); }
 .modal-hint { margin: 0; font-size: 13px; color: var(--ink-2); }
 
+/* Translation-prompt editor */
+.modal-wide { max-width: 660px; }
+.field-hint code { font-family: ui-monospace, Consolas, monospace; font-size: 12px;
+  background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; }
+.prompt-area { width: 100%; min-height: 340px; resize: vertical; box-sizing: border-box;
+  font-family: var(--sans); font-size: 14px; line-height: 1.7; color: var(--ink);
+  padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: var(--surface-2); }
+.prompt-area:focus { outline: none; border-color: var(--teal); background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+
 @keyframes overlay-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes modal-in { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }

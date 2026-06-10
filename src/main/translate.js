@@ -1,11 +1,45 @@
 'use strict';
 
 const { spawn } = require('child_process');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
 const cache = require('./cache');
 
 const CHUNK = 25;
 const CONCURRENCY = 5;
 const MODEL = 'claude-haiku-4-5';
+
+// User-editable translation guidance (shown in the settings dialog).
+const DEFAULT_PROMPT = [
+  'הטקסט הבא הוא כתוביות שהופקו אוטומטית בתמלול דיבור (STT) של הרצאה רפואית באנגלית,',
+  'וייתכנו שגיאות אופייניות ל-STT: מילים ושמות שנשמעו לא נכון, הומופונים, ופיסוק חסר.',
+  'תרגם כל משפט לעברית טבעית וזורמת (לא מילולית), והסק בתבונה את המשמעות המכוונת',
+  'היכן שנראה שה-STT טעה.',
+  'במונחים מקצועיים נהג כפי שרופא דובר עברית מדבר בפועל:',
+  'השאר באנגלית רק שמות ספציפיים - מחלות על שם אדם (Sjögren), תרופות, גנים, חלבונים,',
+  'קולטנים וראשי תיבות (HLA-DR, EBV), ומונחים לטיניים שאין להם צורה עברית מקובלת',
+  '(כמו keratoconjunctivitis sicca).',
+  'אך תרגם לעברית מונחים כלליים שיש להם צורה עברית רווחת, למשל autoimmune ל-אוטואימוני,',
+  'chronic ל-כרוני, inflammatory ל-דלקתי, systemic ל-מערכתי, antibody ל-נוגדן.',
+  'תקן איות שגוי שנובע מה-STT.',
+].join('\n');
+
+// Fixed output contract - always appended, never shown or edited by the user.
+const FORMAT_SUFFIX = 'החזר אך ורק מערך JSON של מחרוזות עברית. המערך חייב להכיל בדיוק {count} '
+  + 'מחרוזות - אחת לכל משפט קלט, באותו סדר, גם אם המשפט קצר או בודד. אל תאחד ואל תשמיט.';
+
+function settingsPath() {
+  try { return path.join(require('electron').app.getPath('userData'), 'settings.json'); }
+  catch (_) { return path.join(os.tmpdir(), 'subtitle-studio', 'settings.json'); }
+}
+function promptTemplate() {
+  try {
+    const t = JSON.parse(fs.readFileSync(settingsPath(), 'utf-8')).translatePrompt;
+    if (typeof t === 'string' && t.trim()) return t;
+  } catch (_) {}
+  return DEFAULT_PROMPT;
+}
 
 function claudeCmd() {
   return process.platform === 'win32' ? 'claude.exe' : 'claude';
@@ -36,19 +70,9 @@ async function checkClaude() {
 }
 
 function buildPrompt(lines) {
-  return [
-    'הטקסט הבא הוא כתוביות שהופקו אוטומטית בתמלול דיבור (STT) של הרצאה רפואית באנגלית,',
-    'וייתכנו שגיאות אופייניות ל-STT: מילים ושמות שנשמעו לא נכון, הומופונים, ופיסוק חסר.',
-    'תרגם כל משפט לעברית טבעית וזורמת (לא מילולית), והסק בתבונה את המשמעות המכוונת',
-    'היכן שנראה שה-STT טעה.',
-    'חשוב: אל תתרגם מונחים רפואיים, שמות מחלות, מונחים אנטומיים, שמות תרופות ומונחים',
-    'מקצועיים לעברית - השאר אותם באנגלית כפי שהם (אך תקן איות שגוי שנובע מה-STT).',
-    `החזר אך ורק מערך JSON של מחרוזות עברית. המערך חייב להכיל בדיוק ${lines.length} `,
-    'מחרוזות - אחת לכל משפט קלט, באותו סדר, גם אם המשפט קצר או בודד. אל תאחד ואל תשמיט.',
-    '',
-    'המשפטים:',
-    JSON.stringify(lines),
-  ].join('\n');
+  const tpl = promptTemplate();                                    // user guidance only
+  const fmt = FORMAT_SUFFIX.replace(/\{count\}/g, String(lines.length)); // fixed contract
+  return `${tpl}\n${fmt}\n\nהמשפטים:\n${JSON.stringify(lines)}`;
 }
 
 function parseArray(reply, expected) {
@@ -118,4 +142,4 @@ async function translateCues(cues, onProgress, signal) {
   return results.flat();
 }
 
-module.exports = { translateCues, checkClaude };
+module.exports = { translateCues, checkClaude, DEFAULT_PROMPT };

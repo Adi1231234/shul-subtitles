@@ -1,0 +1,16 @@
+/* Full-screen blocking update screen - shown on launch until the check resolves */
+.update-guard { position: fixed; inset: 0; z-index: 100; background: var(--surface);
+  display: flex; align-items: center; justify-content: center; }
+.update-guard.hidden { display: none; }
+.ug-card { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+.ug-logo { width: 88px; height: 88px; object-fit: contain;
+  filter: drop-shadow(0 6px 16px rgba(91,60,210,.28)); animation: ug-pulse 1.8s ease-in-out infinite; }
+.ug-title { margin: 0; font-size: 27px; font-weight: 700; letter-spacing: -.02em;
+  background: linear-gradient(115deg, #2563EB, #7C3AED);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.ug-msg { margin: 0; font-size: 15px; color: var(--ink-2); min-height: 20px; }
+.ug-bar { width: 300px; height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.ug-bar.hidden { display: none; }
+.ug-fill { height: 100%; width: 0; border-radius: 999px;
+  background: linear-gradient(90deg, #2563EB, #7C3AED); transition: width .25s ease; }
+@keyframes ug-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.06); opacity: .82; } }
