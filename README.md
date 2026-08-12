@@ -1,3 +1,6 @@
+> **הקוד עבר.** הפיתוח של Shul חי עכשיו במונורפו [Adi1231234/shaked](https://github.com/Adi1231234/shaked) תחת `desktop/shul-subtitles/`.
+> הריפו הזה נשאר כאן כדי לארח את קובצי ההתקנה תחת [Releases](https://github.com/Adi1231234/shul-subtitles/releases) - הלינקים הישנים ממשיכים לעבוד.
+
 # Shul
 
 אפליקציית דסקטופ (Windows) לתמלול ותרגום אוטומטי של סרטונים לעברית, למשתמשים לא טכנולוגיים.
